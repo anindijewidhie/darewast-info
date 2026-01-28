@@ -1,0 +1,7 @@
+{
+  "name": "darewast info",
+  "description": "darewast info: delivering information anywhere An in-depth media consumption and pedagogical companion app featuring e-books, podcasts, and videos with a unique time-based earning model.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
