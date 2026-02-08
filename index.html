@@ -12,10 +12,13 @@
             --primary: #4FD1C5;
             --secondary: #D4AF37;
             --tertiary: #9F7AEA;
+            --accent: #F56565;
         }
+        
         body { 
           font-family: 'Plus Jakarta Sans', sans-serif;
           -webkit-font-smoothing: antialiased;
+          transition: background-color 0.5s ease;
         }
         
         .dyslexic-font {
@@ -33,45 +36,67 @@
           background-color: #000 !important;
         }
 
-        .bg-primary { background-color: var(--primary); }
-        .text-primary { color: var(--primary); }
-        .bg-secondary { background-color: var(--secondary); }
-        .text-secondary { color: var(--secondary); }
-        .bg-tertiary { background-color: var(--tertiary); }
-        .text-tertiary { color: var(--tertiary); }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { 
-          background: #CBD5E1; 
-          border-radius: 20px;
-          border: 2px solid transparent;
-          background-clip: content-box;
-        }
-        .dark ::-webkit-scrollbar-thumb { background: #334155; border: 2px solid transparent; background-clip: content-box; }
-        
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
+        /* Fluid Typography and Spacing */
         .glass {
           background: rgba(255, 255, 255, 0.03);
           backdrop-filter: blur(12px);
           -webkit-backdrop-filter: blur(12px);
           border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-          0% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-          100% { transform: translateY(0px); }
+
+        .dark .glass {
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .mastery-gradient {
-            background: linear-gradient(135deg, rgba(79, 209, 197, 0.1) 0%, rgba(159, 122, 234, 0.1) 100%);
+        /* Custom Scrollbar - World Class */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { 
+          background: #e2e8f0; 
+          border-radius: 100px;
+        }
+        .dark ::-webkit-scrollbar-thumb { background: #1e293b; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Sophisticated Animations */
+        @keyframes reveal {
+          from { opacity: 0; transform: translateY(20px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .reveal { animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        .shimmer {
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+          background-size: 200% 100%;
+          animation: shimmer 2s infinite linear;
+        }
+
+        .mask-linear-gradient {
+          mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+
+        /* Hover Transitions */
+        .premium-shadow {
+          box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .premium-shadow:hover {
+          box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+        }
+
+        .dark .premium-shadow {
+          box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .tab-indicator {
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
     </style>
 <script type="importmap">
@@ -85,7 +110,7 @@
 }
 </script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-primary/30 selection:text-primary-900">
+<body class="bg-[#F8FAFC] dark:bg-[#020617] text-slate-900 dark:text-slate-100 selection:bg-primary/30 selection:text-primary-900 overflow-x-hidden">
     <div id="root"></div>
 </body>
 </html>

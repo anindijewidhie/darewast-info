@@ -113,7 +113,7 @@ const Scanner: React.FC<ScannerProps> = ({ onScanResult, isAccessible, lang, cen
              <span className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase">classified as: {successResult.type}</span>
              <p className="text-sm font-black text-slate-900 dark:text-slate-100">{successResult.title}</p>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 italic leading-relaxed">"{successResult.summary}"</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">"{successResult.summary}"</p>
           <p className="mt-3 text-[10px] font-black text-green-600 dark:text-green-500 uppercase tracking-widest">{t('digitalizeSuccess')}</p>
         </div>
       )}

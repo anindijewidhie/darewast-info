@@ -5,8 +5,7 @@ import { CensorshipLevel, SchoolSystemType, Language, LearningContext } from "..
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const getCensorshipInstruction = (level: CensorshipLevel) => {
-  // Base prohibition instruction for all levels on darewast info
-  const prohibitedItems = "STRICTLY PROHIBIT: any form of violence, pornography, adult content, discrimination (racial, religious, gender, etc.), and political incorrectness. Content must be purely objective, pedagogical, and informational. Any violation will lead to content rejection.";
+  const prohibitedItems = "STRICTLY PROHIBIT: any form of violence, pornography, adult content, discrimination (racial, religious, gender, etc.), Islamophobia, and political incorrectness. Content must be purely objective, pedagogical, and informational. Any violation will lead to content rejection.";
   
   switch (level) {
     case 'Strict':
@@ -18,6 +17,44 @@ const getCensorshipInstruction = (level: CensorshipLevel) => {
     default:
       return `Maintain MAXIMUM censorship. ${prohibitedItems}`;
   }
+};
+
+export const analyzeVideoFrame = async (base64Image: string, title: string, lang: Language, censorship: CensorshipLevel = 'Strict') => {
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-pro-preview',
+    contents: {
+      parts: [
+        {
+          inlineData: {
+            mimeType: 'image/jpeg',
+            data: base64Image,
+          },
+        },
+        {
+          text: `You are a world-class pedagogical expert for darewast info network. Analyze this video frame from the broadcast titled "${title}". ${getCensorshipInstruction(censorship)} 
+          Provide:
+          1. Key Information: Structured bullet points of what is being shown/discussed.
+          2. Educational Insight: A deep pedagogical explanation of the concept.
+          3. Scholar Summary: A concise truth-based summary for a student.
+          Return as JSON in ${lang}.`,
+        },
+      ],
+    },
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          keyInformation: { type: Type.ARRAY, items: { type: Type.STRING } },
+          educationalInsight: { type: Type.STRING },
+          scholarSummary: { type: Type.STRING },
+        },
+        required: ["keyInformation", "educationalInsight", "scholarSummary"]
+      }
+    }
+  });
+
+  return JSON.parse(response.text);
 };
 
 export const scanMedia = async (base64Image: string, mode: 'universal' | 'historical' = 'universal', censorship: CensorshipLevel = 'Strict') => {
@@ -36,7 +73,7 @@ export const scanMedia = async (base64Image: string, mode: 'universal' | 'histor
           },
         },
         {
-          text: `Analyze and digitalize this media. ${modeInstruction} ${getCensorshipInstruction(censorship)} Identify: Title, Full text, Media Type (book, magazine, tabloid, paper), Summary, Estimated Era, Language. Return as JSON.`,
+          text: `Analyze and digitalize this media for the darewast info platform. ${modeInstruction} ${getCensorshipInstruction(censorship)} Identify: Title, Full text, Media Type (book, magazine, tabloid, paper), Summary, Estimated Era, Language. Return as JSON.`,
         },
       ],
     },
@@ -70,7 +107,7 @@ export const getPedagogyInsight = async (
 ) => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `As an educational expert, explain the topic "${topic}" for a student in Grade ${grade} (${stage}) of the ${schoolSystem} system. Purpose: ${context}. ${getCensorshipInstruction(censorship)} Provide structured pathway and key concepts.`,
+    contents: `As an educational expert for darewast info, explain the topic "${topic}" for a student in Grade ${grade} (${stage}) of the ${schoolSystem} system. Purpose: ${context}. ${getCensorshipInstruction(censorship)} Provide structured pathway and key concepts.`,
     config: {
       temperature: 0.7,
     }
@@ -87,7 +124,7 @@ export const translateMediaContent = async (
 ) => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `Translate to ${targetLang}. ${getCensorshipInstruction(censorship)} Return JSON with "title" and "description". Title: "${title}" Description: "${description}"`,
+    contents: `Translate to ${targetLang} for darewast info. ${getCensorshipInstruction(censorship)} Return JSON with "title" and "description". Title: "${title}" Description: "${description}"`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -107,7 +144,7 @@ export const translateMediaContent = async (
 export const analyzePromptQuality = async (prompt: string, lang: Language) => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `Analyze educational video prompt for clarity, value, and pedagogy mastery. Prompt: "${prompt}". ${getCensorshipInstruction('Strict')} Return JSON feedback.`,
+    contents: `Analyze educational prompt for clarity, value, and pedagogy mastery on the darewast info platform. Prompt: "${prompt}". ${getCensorshipInstruction('Strict')} Return JSON feedback.`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -140,7 +177,7 @@ export const generateVideoPrompts = async (
 ) => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `Suggest 3 pedagogical educational video prompts. ${metadata.subject} - ${metadata.topic}. ${getCensorshipInstruction('Strict')} Return JSON array of strings.`,
+    contents: `Suggest 3 pedagogical educational video prompts for darewast info. ${metadata.subject} - ${metadata.topic}. ${getCensorshipInstruction('Strict')} Return JSON array of strings.`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -153,39 +190,22 @@ export const generateVideoPrompts = async (
   return JSON.parse(response.text);
 };
 
-export const getMediaSuggestions = async (
-  preferences: { subject: string; topic: string; theme: string; genre: string },
-  lang: Language,
-  censorship: CensorshipLevel = 'Strict'
-) => {
-  const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
-    contents: `Suggest 3 pedagogical content ideas. ${getCensorshipInstruction(censorship)} Return JSON array.`,
+export const synthesizeImage = async (prompt: string, aspectRatio: string = "1:1") => {
+  const response = await ai.models.generateImages({
+    model: 'imagen-4.0-generate-001',
+    prompt: `Pedagogical illustration for darewast info: ${prompt}`,
     config: {
-      responseMimeType: "application/json",
-      responseSchema: {
-        type: Type.ARRAY,
-        items: {
-          type: Type.OBJECT,
-          properties: {
-            title: { type: Type.STRING },
-            reason: { type: Type.STRING },
-            format: { type: Type.STRING },
-            difficulty: { type: Type.STRING }
-          },
-          required: ["title", "reason", "format", "difficulty"]
-        }
-      }
-    }
+      numberOfImages: 1,
+      aspectRatio: aspectRatio as any,
+    },
   });
-
-  return JSON.parse(response.text);
+  return response.generatedImages[0].image.imageBytes;
 };
 
 export const getInteractiveFeatures = async (content: string, lang: Language) => {
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `Extract hotspots, quiz (3 questions), and visual metaphor from text. ${getCensorshipInstruction('Strict')} Return JSON. Content: "${content.substring(0, 1500)}"`,
+    contents: `Extract hotspots, quiz (3 questions), and visual metaphor from text for darewast info network. ${getCensorshipInstruction('Strict')} Return JSON. Content: "${content.substring(0, 1500)}"`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {

@@ -1,6 +1,6 @@
 
-export type MediaDuration = 15 | 30 | 45 | 60;
-export type MediaType = 'ebook' | 'magazine' | 'tabloid' | 'paper' | 'podcast' | 'video' | 'series' | 'film';
+export type MediaDuration = 15 | 30 | 45 | 60 | 120 | 240 | 480 | 720;
+export type MediaType = 'ebook' | 'magazine' | 'tabloid' | 'paper' | 'podcast' | 'video' | 'series' | 'film' | 'audiobook';
 export type AgeRating = '3+' | '8+' | '13+' | '18+';
 export type CensorshipLevel = 'Strict' | 'Medium' | 'Low';
 export type ReleasePattern = 'MWF' | 'TTS' | 'MT' | 'TF' | 'WS' | 'SUNDAY' | 'DAILY';

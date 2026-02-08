@@ -188,7 +188,7 @@ const Wallet: React.FC<WalletProps> = ({
                   return (
                     <div key={item.id} className="flex flex-col sm:flex-row justify-between items-center px-8 py-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-[2.5rem] group transition-all hover:border-primary/30 hover:shadow-2xl gap-6">
                       <div className="flex items-center gap-6">
-                        <div className={`w-3 h-3 rounded-full shrink-0 ${isClaimed ? 'bg-slate-200 dark:bg-slate-800' : 'bg-secondary animate-pulse shadow-[0_0_10px_rgba(212,175,55,0.6)]'}`}></div>
+                        <div className={`w-3 h-3 rounded-full shrink-0 ${isClaimed ? 'bg-slate-200 dark:bg-slate-800' : 'bg-secondary animate-pulse shadow-[0_0_10px_rgba(204,185,83,0.6)]'}`}></div>
                         <div className="flex flex-col">
                           <span className={`text-base font-extrabold lowercase line-clamp-1 transition-colors ${isClaimed ? 'text-slate-400 dark:text-slate-600' : 'text-slate-900 dark:text-slate-50'}`}>{item.title}</span>
                           <span className="text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest mt-1.5 flex items-center gap-2">
@@ -213,7 +213,7 @@ const Wallet: React.FC<WalletProps> = ({
               </div>
             ) : (
               <div className="p-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-[3rem] bg-slate-50/50 dark:bg-slate-950/20">
-                <p className="text-sm text-slate-400 dark:text-slate-600 font-bold lowercase italic">Your mastery ledger is currently empty. start contributing to begin earning.</p>
+                <p className="text-sm text-slate-400 dark:text-slate-600 font-bold lowercase">Your mastery ledger is currently empty. start contributing to begin earning.</p>
               </div>
             )}
           </div>

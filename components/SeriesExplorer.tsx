@@ -1,7 +1,6 @@
 
 import React, { useMemo } from 'react';
 import { Series, MediaItem, Language, UserRole, ReleasePattern } from '../types';
-// Import cleanPunctuation helper to allow stripping punctuation for accessibility
 import { COLORS, TRANSLATIONS, MONTHS, cleanPunctuation } from '../constants';
 
 interface SeriesExplorerProps {
@@ -13,14 +12,12 @@ interface SeriesExplorerProps {
   mediaList: MediaItem[];
   onSelectEpisode: (item: MediaItem) => void;
   isAccessible?: boolean;
-  // Add noPunct to interface to resolve TS error in App.tsx
   noPunct?: boolean;
 }
 
 const SeriesExplorer: React.FC<SeriesExplorerProps> = ({ 
   lang, role, cycleStartMonth, onSetCycleStartMonth, seriesList, mediaList, onSelectEpisode, isAccessible, noPunct 
 }) => {
-  // Enhanced translation helper that respects the noPunctuation accessibility setting
   const t = (key: string) => {
     const raw = TRANSLATIONS[lang]?.[key] || TRANSLATIONS['en'][key] || key;
     return noPunct ? cleanPunctuation(raw) : raw;
@@ -40,9 +37,7 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
   }, [cycleStartMonth, currentMonthIdx]);
 
   const isTodayDrop = (pattern: ReleasePattern, duration: number) => {
-    // 45 and 60 minute series are released weekly on Monday-Sunday (Daily Mastery)
     if (duration === 45 || duration === 60) return true;
-
     switch (pattern) {
       case 'MWF': return [1, 3, 5].includes(currentDay);
       case 'TTS': return [2, 4, 6].includes(currentDay);
@@ -57,7 +52,6 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
 
   const getPatternLabel = (pattern: ReleasePattern, duration: number) => {
     if (duration === 45 || duration === 60) return t('scheduleDaily');
-
     switch (pattern) {
       case 'MWF': return t('scheduleMWF');
       case 'TTS': return t('scheduleTTS');
@@ -75,10 +69,8 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
 
   return (
     <div className={`space-y-16 animate-in fade-in duration-700 pb-20`}>
-      {/* Broadcast Header */}
       <div className="bg-gray-900 text-white rounded-[4rem] p-16 relative overflow-hidden shadow-2xl border-b-[12px] border-primary/20">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/2"></div>
-        
         <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12">
           <div className="max-w-2xl">
             <div className="flex flex-wrap items-center gap-5 mb-8">
@@ -93,7 +85,6 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
               {t('seriesSubtitle')}. {t('safetyWarning')}
             </p>
           </div>
-
           <div className="w-full lg:w-[400px] bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10 space-y-8 shadow-inner">
             <div className="flex justify-between items-center border-b border-white/10 pb-6">
               <div>
@@ -114,19 +105,16 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
                <div className="h-3.5 w-full bg-white/10 rounded-full overflow-hidden p-1 shadow-inner">
                   <div className="h-full bg-primary shadow-[0_0_20px_rgba(83,205,186,0.6)] rounded-full transition-all duration-1000" style={{ width: `${periodProgress.percent}%` }}></div>
                </div>
-               <p className="text-[11px] font-black text-white/40 text-center italic">Cycle Phase: {periodProgress.month} of 3</p>
+               <p className="text-[11px] font-black text-white/40 text-center">Cycle Phase: {periodProgress.month} of 3</p>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Daily Release & Series Mastery */}
       <div className="space-y-20">
         {seriesList.map((series) => {
           const episodes = mediaList.filter(m => m.seriesId === series.id).sort((a, b) => (a.episodeNumber || 0) - (b.episodeNumber || 0));
           const isReleaseDay = isTodayDrop(series.pattern, series.duration);
           const isHighDuration = series.duration === 45 || series.duration === 60;
-          
           return (
             <div key={series.id} className="space-y-10">
               <div className="flex flex-col md:flex-row md:items-end justify-between border-b-2 border-gray-100 dark:border-gray-700 pb-8 gap-8">
@@ -151,7 +139,6 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
                    </div>
                 </div>
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {episodes.map((ep) => (
                   <div key={ep.id} onClick={() => onSelectEpisode(ep)} className="group cursor-pointer space-y-5">
@@ -173,7 +160,6 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
                     </div>
                   </div>
                 ))}
-                
                 {Array.from({ length: Math.min(4, series.episodesPerPeriod - episodes.length) }).map((_, i) => (
                   <div key={i} className="aspect-video rounded-[2.5rem] border-4 border-dashed border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/20 flex flex-col items-center justify-center p-10 text-center opacity-30 hover:opacity-50 transition-opacity">
                      <span className="text-4xl mb-4">⏳</span>
@@ -186,8 +172,6 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
           );
         })}
       </div>
-
-      {/* Specialized Sunday Films Block */}
       {sundayFilms.length > 0 && (
         <section className="p-16 bg-secondary/5 rounded-[4rem] border-4 border-secondary/10 relative overflow-hidden">
            <div className="absolute top-0 right-0 w-80 h-80 bg-secondary/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
@@ -221,8 +205,6 @@ const SeriesExplorer: React.FC<SeriesExplorerProps> = ({
            </div>
         </section>
       )}
-
-      {/* Human Mastery Footer */}
       <div className="p-16 bg-primary/5 rounded-[4rem] border-4 border-primary/10 flex flex-col md:flex-row items-center gap-12 shadow-inner relative overflow-hidden">
          <div className="w-24 h-24 bg-white dark:bg-gray-800 rounded-[2rem] flex items-center justify-center shadow-2xl border border-primary/20 shrink-0 transform rotate-6">
             <span className="text-5xl">🛡️</span>

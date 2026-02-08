@@ -1,6 +1,6 @@
 {
   "name": "darewast info",
-  "description": "darewast info: delivering information anywhere An in-depth media consumption and pedagogical companion app featuring e-books, podcasts, and videos with a unique time-based earning model.",
+  "description": "darewast info: delivering information anywhere. An in-depth media portal for systematic mastery of 20+ subjects. Features e-books, e-magazines, e-tabloids, e-papers, audiobooks, podcasts, and videos with age-appropriate, verified pedagogical content.",
   "requestFramePermissions": [
     "camera"
   ]
